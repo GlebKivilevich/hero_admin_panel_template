@@ -4,11 +4,11 @@ import { createHeroes } from '../../actions';
 import { v4 as uuid } from 'uuid';
 
 // Задача для этого компонента:
-// Реализовать создание нового героя с введенными данными. Он должен попадать
-// в общее состояние и отображаться в списке + фильтроваться
-// Уникальный идентификатор персонажа можно сгенерировать через uiid
+// Реализовать создание нового героя с введенными данными. Он должен попадать +
+// в общее состояние и отображаться в списке + фильтроваться +-
+// Уникальный идентификатор персонажа можно сгенерировать через uiid +
 // Усложненная задача:
-// Персонаж создается и в файле json при помощи метода POST
+// Персонаж создается и в файле json при помощи метода POST -
 // Дополнительно:
 // Элементы <option></option> желательно сформировать на базе
 // данных из фильтров
@@ -18,10 +18,9 @@ const HeroesAddForm = () => {
   const [descriptionHero, setDescriptionHero] = useState('');
   const [elementHero, setElementHero] = useState('');
 
-  const heroes = useSelector(state => state.heroes);
-//   console.log(heroes);
+  const heroes = useSelector((state) => state.heroes);
+  //   console.log(heroes);
   const dispatch = useDispatch();
-  
 
   const handleNameHero = (e) => {
     e.preventDefault();
@@ -48,6 +47,11 @@ const HeroesAddForm = () => {
 
       dispatch(createHeroes(objHero));
     }
+    setTimeout(() => {
+      setNameHero('');
+      setDescriptionHero('');
+      setElementHero('');
+    }, 250);
   };
 
   return (
