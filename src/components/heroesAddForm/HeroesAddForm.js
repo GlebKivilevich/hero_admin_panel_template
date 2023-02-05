@@ -13,13 +13,16 @@ import { v4 as uuid } from 'uuid';
 // Элементы <option></option> желательно сформировать на базе
 // данных из фильтров
 
+// ======= TODO: Использовать Formik и Yup для создания и контроля форм =) ======== МБ
+// TODO: сделать задания
+
 const HeroesAddForm = () => {
   const [nameHero, setNameHero] = useState('');
   const [descriptionHero, setDescriptionHero] = useState('');
   const [elementHero, setElementHero] = useState('');
 
-  const heroes = useSelector((state) => state.heroes);
-  //   console.log(heroes);
+  // const { filters } = useSelector((state) => state);
+  // console.log(filters);
   const dispatch = useDispatch();
 
   const handleNameHero = (e) => {
@@ -92,6 +95,7 @@ const HeroesAddForm = () => {
         <label htmlFor="element" className="form-label">
           Выбрать элемент героя
         </label>
+        
         <select
           required
           className="form-select"
@@ -101,13 +105,12 @@ const HeroesAddForm = () => {
           onChange={handleElementHero}
         >
           <option>Я владею элементом...</option>
-          <option value="fire">Огонь</option>
-          <option value="water">Вода</option>
-          <option value="wind">Ветер</option>
-          <option value="earth">Земля</option>
+          <option value="Огонь">Огонь</option>
+          <option value="Вода">Вода</option>
+          <option value="Ветер">Ветер</option>
+          <option value="Земля">Земля</option>
         </select>
       </div>
-
       <button type="submit" className="btn btn-primary" onClick={createNewHero}>
         Создать
       </button>

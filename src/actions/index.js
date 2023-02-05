@@ -52,3 +52,10 @@ export const heroesFilterError = () => {
     type: 'HEROES_FILTER_ERROR',
   };
 };
+
+export const elementHeroFilter = (filter) => {
+  return {
+    type: 'ELEMENT_HERO_FILTER',
+    filter,
+  };
+};

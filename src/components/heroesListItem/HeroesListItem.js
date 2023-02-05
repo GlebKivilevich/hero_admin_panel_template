@@ -2,27 +2,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deletHeroes } from '../../actions';
 import axios from 'axios';
 import { useHttp } from '../../hooks/http.hook';
+
+
 const HeroesListItem = ({ name, description, element, id }) => {
+
+  const {elementHero } = useSelector(state => state);
   const { deletHero } = useHttp();
   const dispatch = useDispatch();
 
   const deletOneHero = () => {
     dispatch(deletHeroes(id));
   };
-
+  // console.log("element >>", element)
+  // console.log("elementHero >>", elementHero)
   let elementClassName;
 
   switch (element) {
-    case 'fire':
+    case 'Огонь':
       elementClassName = 'bg-danger bg-gradient';
       break;
-    case 'water':
+    case 'Вода':
       elementClassName = 'bg-primary bg-gradient';
       break;
-    case 'wind':
+    case 'Ветер':
       elementClassName = 'bg-success bg-gradient';
       break;
-    case 'earth':
+    case 'Земля':
       elementClassName = 'bg-secondary bg-gradient';
       break;
     default:
@@ -42,7 +47,7 @@ const HeroesListItem = ({ name, description, element, id }) => {
         <p className="card-text">{description}</p>
       </div>
       <span className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light">
-        <button type="button" className="btn-close btn-close" aria-label="Close" onClick={deletOneHero}></button>
+        <button type="button" className="btn-close btn-close" aria-label="Close" onClick={() => deletOneHero()}></button>
       </span>
     </li>
   );

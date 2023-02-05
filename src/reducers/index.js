@@ -1,8 +1,9 @@
-import axios from 'axios';
 const initialState = {
   heroes: [],
   heroesLoadingStatus: 'idle',
   filters: [],
+  filterHero: [],
+  elementHero: 'Все',
   filterLoadingStatus: 'idle',
 };
 
@@ -15,9 +16,13 @@ const reducer = (state = initialState, action) => {
       };
 
     case 'HEROES_FETCHED':
+      const { payload, filter } = action;
+      const { elementHero, heroes } = state;
+      const filterElementHero = elementHero === 'Все' ? payload : heroes.filter((item) => item.element === filter);
       return {
         ...state,
-        heroes: action.payload,
+        heroes: payload,
+        filterHero: filterElementHero,
         heroesLoadingStatus: 'idle',
       };
 
@@ -36,8 +41,8 @@ const reducer = (state = initialState, action) => {
     case 'HEROES_FILTER':
       return {
         ...state,
-        filter: action.dataFilter,
-        filterLoadingStatus: "idle"
+        filters: action.dataFilter,
+        filterLoadingStatus: 'idle',
       };
 
     case 'HEROES_FILTER_ERROR':
@@ -49,24 +54,42 @@ const reducer = (state = initialState, action) => {
     case 'HEROES_DELETE':
       return (function () {
         const { id } = action;
-        const { heroes } = state;
-        // fetch(`https://63d3e39a8d4e68c14eb51d84.mockapi.io/heroes/id=${id}`, {method: "DELETE"});
-        const newHeroes = heroes.filter((item) => item.id !== id);
+        const { heroes, filterHero } = state;
+
+        const delleteHeroesFil = filterHero.filter((item) => item.id !== id);
+        const delleteHeroes = heroes.filter((item) => item.id !== id);
 
         return {
           ...state,
-          heroes: newHeroes,
+          filterHero: delleteHeroesFil,
+          heroes: delleteHeroes,
         };
       })();
 
     case 'HEROES_CREATE':
       return (function () {
-        const { heroes } = state;
+        const { heroes, elementHero } = state;
         const { data } = action;
+
+        const createHero = [...heroes, data];
+        return {
+          ...state,
+          heroes: createHero,
+          filterHero: elementHero === 'Все' ? createHero : createHero.filter((item) => item.element === elementHero),
+        };
+      })();
+
+    case 'ELEMENT_HERO_FILTER':
+      return (function () {
+        const { heroes, filterHero, elementHero } = state;
+        const { filter } = action;
+
+        const filterElementHero = filter === 'Все' ? heroes : heroes.filter((item) => item.element === filter);
 
         return {
           ...state,
-          heroes: [...heroes, data],
+          filterHero: filterElementHero,
+          elementHero: filter,
         };
       })();
 
