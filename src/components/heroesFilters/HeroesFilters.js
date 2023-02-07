@@ -1,26 +1,60 @@
-
+// TODO:
 // Задача для этого компонента:
-// Фильтры должны формироваться на основании загруженных данных
-// Фильтры должны отображать только нужных героев при выборе
-// Активный фильтр имеет класс active
+// Фильтры должны формироваться на основании загруженных данных +
+// Фильтры должны отображать только нужных героев при выборе +
+// Активный фильтр имеет класс active +
 // Изменять json-файл для удобства МОЖНО!
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
+import axios from 'axios';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { heroesFilterFetching, heroesFilter, heroesFilterError, elementHeroFilter } from '../../actions';
+import { useHttp } from '../../hooks/http.hook';
+import Spinner from '../spinner/Spinner';
+
 const HeroesFilters = () => {
-    return (
-        <div className="card shadow-lg mt-4">
-            <div className="card-body">
-                <p className="card-text">Отфильтруйте героев по элементам</p>
-                <div className="btn-group">
-                    <button className="btn btn-outline-dark active">Все</button>
-                    <button className="btn btn-danger">Огонь</button>
-                    <button className="btn btn-primary">Вода</button>
-                    <button className="btn btn-success">Ветер</button>
-                    <button className="btn btn-secondary">Земля</button>
-                </div>
-            </div>
+  const { filters, filterLoadingStatus, elementHero } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  const { request } = useHttp();
+  useEffect(() => {
+    dispatch(heroesFilterFetching());
+    request('https://63d3e39a8d4e68c14eb51d84.mockapi.io/filter')
+      .then((filterData) => dispatch(heroesFilter(filterData)))
+      .catch(dispatch(heroesFilterError()));
+  }, []);
+
+  if (filterLoadingStatus === 'loading') {
+    return <Spinner />;
+  } else if (filterLoadingStatus === 'error') {
+    return <h5 className="text-center mt-5">Ошибка загрузки</h5>;
+  }
+
+  const handleClick = (filter) => {
+    dispatch(elementHeroFilter(filter));
+  };
+
+  return (
+    <div className="card shadow-lg mt-4">
+      <div className="card-body">
+        <p className="card-text">Отфильтруйте героев по элементам</p>
+        <div className="btn-group">
+          {filters.map((item) => {
+            return (
+              <button
+                onClick={() => handleClick(item.label)}
+                className={`btn ${item.className} ${elementHero === item.label && 'active'} `}
+                key={item.id}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
 
 export default HeroesFilters;
