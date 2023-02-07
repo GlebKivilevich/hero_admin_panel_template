@@ -1,20 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { deletHeroes } from '../../actions';
-import axios from 'axios';
-import { useHttp } from '../../hooks/http.hook';
-
 
 const HeroesListItem = ({ name, description, element, id }) => {
-
-  const {elementHero } = useSelector(state => state);
-  const { deletHero } = useHttp();
   const dispatch = useDispatch();
 
   const deletOneHero = () => {
     dispatch(deletHeroes(id));
   };
-  // console.log("element >>", element)
-  // console.log("elementHero >>", elementHero)
   let elementClassName;
 
   switch (element) {
@@ -46,8 +38,11 @@ const HeroesListItem = ({ name, description, element, id }) => {
         <h3 className="card-title">{name}</h3>
         <p className="card-text">{description}</p>
       </div>
-      <span className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light">
-        <button type="button" className="btn-close btn-close" aria-label="Close" onClick={() => deletOneHero()}></button>
+      <span
+        onClick={() => deletOneHero()}
+        className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light btn"
+      >
+        <button type="button" className="btn-close btn-close" aria-label="Close"></button>
       </span>
     </li>
   );
