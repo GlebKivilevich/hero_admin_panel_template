@@ -10,19 +10,17 @@ import { v4 as uuid } from 'uuid';
 // Усложненная задача:
 // Персонаж создается и в файле json при помощи метода POST -
 // Дополнительно:
-// Элементы <option></option> желательно сформировать на базе
-// данных из фильтров
-
-// ======= TODO: Использовать Formik и Yup для создания и контроля форм =) ======== МБ
-// TODO: сделать задания
+// Элементы <option></option> желательно сформировать на базе +
+// данных из фильтров +
 
 const HeroesAddForm = () => {
   const [nameHero, setNameHero] = useState('');
   const [descriptionHero, setDescriptionHero] = useState('');
   const [elementHero, setElementHero] = useState('');
+  const [validForm, setValidForm] = useState(null);
 
-  // const { filters } = useSelector((state) => state);
-  // console.log(filters);
+  const { filters } = useSelector((state) => state);
+  console.log(filters);
   const dispatch = useDispatch();
 
   const handleNameHero = (e) => {
@@ -40,21 +38,24 @@ const HeroesAddForm = () => {
 
   const createNewHero = (e) => {
     e.preventDefault();
-    if (nameHero.length > 5 && descriptionHero.length > 5) {
+    if (nameHero.length >= 3 && descriptionHero.length >= 10 && elementHero) {
       const objHero = {
         id: uuid(),
         name: nameHero,
         description: descriptionHero,
         element: elementHero,
       };
-
+      setValidForm(true);
       dispatch(createHeroes(objHero));
+
+      setTimeout(() => {
+        setNameHero('');
+        setDescriptionHero('');
+        setElementHero('');
+      }, 250);
+    } else {
+      setValidForm(false);
     }
-    setTimeout(() => {
-      setNameHero('');
-      setDescriptionHero('');
-      setElementHero('');
-    }, 250);
   };
 
   return (
@@ -73,6 +74,7 @@ const HeroesAddForm = () => {
           value={nameHero}
           onChange={handleNameHero}
         />
+        <p className={`${nameHero.length < 3 ? 'text-danger' : 'text-success'}`}>Минимум 3 символа!</p>
       </div>
 
       <div className="mb-3">
@@ -89,13 +91,14 @@ const HeroesAddForm = () => {
           value={descriptionHero}
           onChange={handleDescriptionHero}
         />
+        <p className={`${descriptionHero.length < 10 ? 'text-danger' : 'text-success'}`}>Минимум 10 символов!</p>
       </div>
 
       <div className="mb-3">
         <label htmlFor="element" className="form-label">
           Выбрать элемент героя
         </label>
-        
+
         <select
           required
           className="form-select"
@@ -105,11 +108,18 @@ const HeroesAddForm = () => {
           onChange={handleElementHero}
         >
           <option>Я владею элементом...</option>
-          <option value="Огонь">Огонь</option>
-          <option value="Вода">Вода</option>
-          <option value="Ветер">Ветер</option>
-          <option value="Земля">Земля</option>
+          {filters &&
+            filters.map((item) => {
+              return (
+                item.label !== 'Все' && (
+                  <option className={item.className} key={item.id} value={item.label}>
+                    {item.label}
+                  </option>
+                )
+              );
+            })}
         </select>
+        <p className={`${!elementHero ? 'text-danger' : 'text-success'}`}>Выберете героя!</p>
       </div>
       <button type="submit" className="btn btn-primary" onClick={createNewHero}>
         Создать

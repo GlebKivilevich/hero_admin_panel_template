@@ -1,8 +1,8 @@
 // TODO:
 // Задача для этого компонента:
-// Фильтры должны формироваться на основании загруженных данных
-// Фильтры должны отображать только нужных героев при выборе
-// Активный фильтр имеет класс active
+// Фильтры должны формироваться на основании загруженных данных +
+// Фильтры должны отображать только нужных героев при выборе +
+// Активный фильтр имеет класс active +
 // Изменять json-файл для удобства МОЖНО!
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
@@ -18,7 +18,6 @@ const HeroesFilters = () => {
   const dispatch = useDispatch();
 
   const { request } = useHttp();
-  // console.log('filters >> ', filters);
   useEffect(() => {
     dispatch(heroesFilterFetching());
     request('https://63d3e39a8d4e68c14eb51d84.mockapi.io/filter')
@@ -42,61 +41,15 @@ const HeroesFilters = () => {
         <p className="card-text">Отфильтруйте героев по элементам</p>
         <div className="btn-group">
           {filters.map((item) => {
-            switch (item.filter) {
-              case 'Все':
-                return (
-                  <button
-                    onClick={() => handleClick(item.filter)}
-                    className={`btn btn-outline-dark ${elementHero === item.filter && 'active'} `}
-                    key={item.id}
-                  >
-                    {item.filter}
-                  </button>
-                );
-              case 'Огонь':
-                return (
-                  <button
-                    onClick={() => handleClick(item.filter)}
-                    className={`btn btn-danger ${elementHero === item.filter && 'active'} `}
-                    key={item.id}
-                  >
-                    {item.filter}
-                  </button>
-                );
-              case 'Вода':
-                return (
-                  <button
-                    onClick={() => handleClick(item.filter)}
-                    className={`btn btn btn-primary ${elementHero === item.filter && 'active'}`}
-                    key={item.id}
-                  >
-                    {item.filter}
-                  </button>
-                );
-              case 'Ветер':
-                return (
-                  <button
-                    onClick={() => handleClick(item.filter)}
-                    className={`btn btn-success ${elementHero === item.filter && 'active'}`}
-                    key={item.id}
-                  >
-                    {item.filter}
-                  </button>
-                );
-              case 'Земля':
-                return (
-                  <button
-                    onClick={() => handleClick(item.filter)}
-                    className={`btn btn-secondary ${elementHero === item.filter && 'active'}`}
-                    key={item.id}
-                  >
-                    {item.filter}
-                  </button>
-                );
-
-              default:
-                return '';
-            }
+            return (
+              <button
+                onClick={() => handleClick(item.label)}
+                className={`btn ${item.className} ${elementHero === item.label && 'active'} `}
+                key={item.id}
+              >
+                {item.label}
+              </button>
+            );
           })}
         </div>
       </div>
