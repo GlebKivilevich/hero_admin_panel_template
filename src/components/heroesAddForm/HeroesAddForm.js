@@ -19,8 +19,7 @@ const HeroesAddForm = () => {
   const [elementHero, setElementHero] = useState('');
   const [validForm, setValidForm] = useState(null);
 
-  const { filters } = useSelector((state) => state);
-  console.log(filters);
+  const { filters } = useSelector((state) => state.filterReducer);
   const dispatch = useDispatch();
 
   const handleNameHero = (e) => {

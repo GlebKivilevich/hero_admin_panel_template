@@ -5,10 +5,11 @@ export const heroesFetching = () => {
   };
 };
 
-export const heroesFetched = (heroes) => {
+export const heroesFetched = (hero, filter) => {
   return {
     type: 'HEROES_FETCHED',
-    payload: heroes,
+    hero,
+    filter,
   };
 };
 
@@ -34,28 +35,28 @@ export const createHeroes = (data) => {
 
 // ====Filter=====
 
-export const heroesFilterFetching = () => {
+export const filterFetching = () => {
   return {
-    type: 'HEROES_FILTER_FETCHING',
+    type: 'FILTER_FETCHING',
   };
 };
 
-export const heroesFilter = (filter) => {
+export const filterFetched = (filter) => {
   return {
-    type: 'HEROES_FILTER',
+    type: 'FILTER_FETCHED',
     dataFilter: filter,
   };
 };
 
-export const heroesFilterError = () => {
+export const filterError = () => {
   return {
-    type: 'HEROES_FILTER_ERROR',
+    type: 'FILTER_ERROR',
   };
 };
 
-export const elementHeroFilter = (filter) => {
+export const elementFilter = (filter) => {
   return {
-    type: 'ELEMENT_HERO_FILTER',
+    type: 'ELEMENT_FILTER',
     filter,
   };
 };
