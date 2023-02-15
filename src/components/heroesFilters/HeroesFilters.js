@@ -9,21 +9,23 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { filterFetching, filterFetched, filterError, elementFilter } from '../../actions';
+import { fetchFilters, elementFilter } from '../../actions';
 import { useHttp } from '../../hooks/http.hook';
 import Spinner from '../spinner/Spinner';
 
 const HeroesFilters = () => {
-  const { filters, filterLoadingStatus, elementHero } = useSelector((state) => state.filterReducer ); //state.filters
-  
+  const { filters, filterLoadingStatus, elementHero } = useSelector((state) => state.filterReducer); //state.filters
+
   const dispatch = useDispatch();
 
   const { request } = useHttp();
   useEffect(() => {
-    dispatch(filterFetching());
-    request('https://63d3e39a8d4e68c14eb51d84.mockapi.io/filter')
-      .then((filterData) => dispatch(filterFetched(filterData)))
-      .catch(dispatch(filterError()));
+    dispatch(fetchFilters(request));
+    // === ❘❘ ====
+    // dispatch(filterFetching());
+    // request('https://63d3e39a8d4e68c14eb51d84.mockapi.io/filter')
+    //   .then((filterData) => dispatch(filterFetched(filterData)))
+    //   .catch(dispatch(filterError()));
   }, []);
 
   if (filterLoadingStatus === 'loading') {

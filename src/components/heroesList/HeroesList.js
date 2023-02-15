@@ -3,19 +3,14 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { heroesFetching, heroesFetched, heroesFetchingError } from '../../actions';
+import { fetchHeroes } from '../../actions';
 import HeroesListItem from '../heroesListItem/HeroesListItem';
 import Spinner from '../spinner/Spinner';
-
-// Задача для этого компонента:
-// При клике на "крестик" идет удаление персонажа из общего состояния(+)
-// Усложненная задача: Ошибка при удалении (-)
-// Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
   const filteredHeroesSelector = createSelector(
     (state) => state.filterReducer.elementHero,
-    (state) => state.heroesReducer.heroes,
+    (state) => state.heroes.heroes,
     (filter, heroes) => {
       if (filter === 'Все') {
         return heroes;
@@ -26,23 +21,17 @@ const HeroesList = () => {
   );
   const filteredHeroes = useSelector(filteredHeroesSelector);
 
-  // const filteredHeroes = useSelector((state) => {
-  //   if (state.filterReducer.elementHero === 'Все') {
-  //     return state.heroesReducer.heroes;
-  //   } else {
-  //     return state.heroesReducer.heroes.filter((item) => item.element === state.filterReducer.elementHero);
-  //   }
-  // });
-
-  const { heroesLoadingStatus } = useSelector((state) => state.heroesReducer);
+  const { heroesLoadingStatus } = useSelector((state) => state.heroes);
   const dispatch = useDispatch();
   const { request } = useHttp();
 
   useEffect(() => {
-    dispatch(heroesFetching());
-    request('https://63d3e39a8d4e68c14eb51d84.mockapi.io/heroes')
-      .then((data) => dispatch(heroesFetched(data)))
-      .catch(() => dispatch(heroesFetchingError()));
+    dispatch(fetchHeroes(request));
+    // === ❘❘ ===
+    // dispatch(heroesFetching); //heroesFetching()
+    // request('https://63d3e39a8d4e68c14eb51d84.mockapi.io/heroes')
+    //   .then((data) => dispatch(heroesFetched(data)))
+    //   .catch(() => dispatch(heroesFetchingError()));
 
     // eslint-disable-next-line
   }, []);
