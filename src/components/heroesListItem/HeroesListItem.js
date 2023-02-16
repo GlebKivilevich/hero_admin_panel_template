@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { deletHeroes } from '../../actions';
+import { deletHeroes } from '../heroesList/heroesSlice';
 
 const HeroesListItem = ({ name, description, element, id }) => {
   const dispatch = useDispatch();

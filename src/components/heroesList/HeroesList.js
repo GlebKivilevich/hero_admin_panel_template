@@ -9,7 +9,7 @@ import Spinner from '../spinner/Spinner';
 
 const HeroesList = () => {
   const filteredHeroesSelector = createSelector(
-    (state) => state.filterReducer.elementHero,
+    (state) => state.filters.elementHero,
     (state) => state.heroes.heroes,
     (filter, heroes) => {
       if (filter === 'Все') {
