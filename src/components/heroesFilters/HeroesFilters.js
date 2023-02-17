@@ -1,8 +1,6 @@
-import axios from 'axios';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchFilters } from '../../actions';
-import { elementFilter } from './filterSlice';
+import { elementFilter, fetchFilters } from './filterSlice';
 import { useHttp } from '../../hooks/http.hook';
 import Spinner from '../spinner/Spinner';
 
@@ -13,7 +11,7 @@ const HeroesFilters = () => {
 
   const { request } = useHttp();
   useEffect(() => {
-    dispatch(fetchFilters(request));
+    dispatch(fetchFilters());
     // === ❘❘ ====
     // dispatch(filterFetching());
     // request('https://63d3e39a8d4e68c14eb51d84.mockapi.io/filter')
